@@ -28,9 +28,11 @@ class ViewController: UIViewController {
                     .withMustKeys([.any  ])
                     .withSearchOn([.any])
                     .run({
+                        
+                        
+                        
                         self.tableView.reloadData()
                     })
-                
                 
                 
                 

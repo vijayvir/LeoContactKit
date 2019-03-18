@@ -26,15 +26,19 @@ class LeoContacts {
         case all
         
     }
-    
    static var share = LeoContacts()
-   fileprivate var mustKeys :[Keys] = [.any]
-   fileprivate var searchOn :[Keys] = [.any]
-   
+ 
+    fileprivate var mustKeys :[Keys] = [.any]
+    fileprivate var searchOn :[Keys] = [.any]
+    fileprivate var contactStore = CNContactStore()
+    fileprivate var contactsOriginals = [CNContact]()
+    
+    fileprivate var searchText : String = ""
     func withMustKeys(_ keys : [Keys] ) -> LeoContacts {
         self.mustKeys = keys
         return self
     }
+  
     func withSearchOn(_ keys : [Keys] ) -> LeoContacts {
         self.searchOn = keys
         return self
@@ -43,247 +47,12 @@ class LeoContacts {
         callback?()
     }
     
-   fileprivate var contactStore = CNContactStore()
-   fileprivate var contactsOriginals = [CNContact]()
-    
-   fileprivate var searchText : String = ""
-    
    func searchText(_ searchText: String ){
         self.searchText = searchText
     }
     
     
-    var  contacts : [LeoContactable] {
-    get {
-        if searchOn.elementsEqual([.fullName]) {
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoFullName != nil {
-                    if contact.leoFullName!.lowercased().contains( searchText.lowercased()) {
-                        return true
-                    }
-                }
-              
-                
-                return false
-            })
-        }  else if searchOn.elementsEqual([.phoneNumber]) {
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoPhoneNumber != nil {
-                    if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) {
-                        return true
-                    }
-                }
-                
-                
-                return false
-            })
-        } else if searchOn.elementsEqual([.email]) {
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoEmail != nil {
-                    if contact.leoEmail!.lowercased().contains( searchText.lowercased()) {
-                        return true
-                    }
-                }
-                
-                
-                return false
-            })
-        }else if searchOn.sorted(by: { (key1, key2) -> Bool in
-            return key1.rawValue < key2.rawValue
-            
-        }).elementsEqual([.fullName, .email]) {
-            
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoEmail != nil &&  contact.leoFullName != nil   {
-                    if contact.leoEmail!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if contact.leoEmail != nil   {
-                    if contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if  contact.leoFullName != nil   {
-                    if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                }
-                
-                
-                return false
-            })
-            
-        }else if searchOn.sorted(by: { (key1, key2) -> Bool in
-            return key1.rawValue < key2.rawValue
-            
-        }).elementsEqual([.fullName, .phoneNumber]) {
-            
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoPhoneNumber != nil &&  contact.leoFullName != nil   {
-                    if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if contact.leoPhoneNumber != nil   {
-                    if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if  contact.leoFullName != nil   {
-                    if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                }
-                
-                
-                return false
-            })
-            
-        }else if searchOn.sorted(by: { (key1, key2) -> Bool in
-            return key1.rawValue < key2.rawValue
-            
-        }).elementsEqual([.fullName, .phoneNumber ,.email]) ||   searchOn.elementsEqual([.all]) ||   searchOn.elementsEqual([.any]) {
-            
-            return contactsBefore.filter({ (contact) -> Bool in
-                
-                if searchText == "" {
-                    return true
-                }
-                
-                if contact.leoPhoneNumber != nil &&  contact.leoFullName != nil && contact.leoEmail != nil   {
-                    if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased()) ||  contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if contact.leoPhoneNumber != nil   {
-                    if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                } else if  contact.leoFullName != nil   {
-                    if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                }else if  contact.leoEmail != nil   {
-                    if  contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
-                        return true
-                    }
-                }
-                
-                
-                
-                return false
-            })
-            
-        }else {
-            return []
-        }
-    }
-    }
-
-   fileprivate var contactsBefore : [LeoContactable] {
-        get {
-            if mustKeys.elementsEqual([.any]) {
-                 return contactsOriginals
-            }else if mustKeys.elementsEqual([.fullName]) {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoFullName.count > 0 {
-                        return true
-                    }
-                    return false
-                })
-  
-            }else if mustKeys.elementsEqual([.email])  {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoEmail.count > 0 {
-                        return true
-                    }
-                    return false
-                })
-                
-            }else if mustKeys.elementsEqual([.phoneNumber]){
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoPhoneNumber.count > 0 {
-                        return true
-                    }
-                    return false
-                })
-                
-            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
-                return key1.rawValue < key2.rawValue
-                
-            }).elementsEqual([.fullName, .email]) {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoFullName.count > 0  &&   contact.leoEmail.count > 0  {
-                        return true
-                    }
-                    return false
-                })
-                
-            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
-                return key1.rawValue < key2.rawValue
-                
-            }).elementsEqual([.fullName, .phoneNumber]) {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  {
-                        return true
-                    }
-                    return false
-                })
-                
-            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
-                return key1.rawValue < key2.rawValue
-                
-            }).elementsEqual([.fullName, .phoneNumber , .email]) {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  &&   contact.leoEmail.count > 0  {
-                        return true
-                    }
-                    return false
-                })
-                
-            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
-                return key1.rawValue < key2.rawValue
-                
-            }).elementsEqual([.all]) {
-                
-                return contactsOriginals.filter({ (contact) -> Bool in
-                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  &&   contact.leoEmail.count > 0  {
-                        return true
-                    }
-                    return false
-                })
-                
-            }
-            return []
-        }
-    }
+ 
     
     func requestForAccess(completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
         
@@ -366,6 +135,240 @@ class LeoContacts {
         presentedViewController.present(alertController, animated: true, completion: nil)
     }
 }
+
+extension LeoContacts {
+    var  contacts : [LeoContactable] {
+        get {
+            if searchOn.elementsEqual([.fullName]) {
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoFullName != nil {
+                        if contact.leoFullName!.lowercased().contains( searchText.lowercased()) {
+                            return true
+                        }
+                    }
+                    
+                    
+                    return false
+                })
+            }  else if searchOn.elementsEqual([.phoneNumber]) {
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoPhoneNumber != nil {
+                        if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) {
+                            return true
+                        }
+                    }
+                    
+                    
+                    return false
+                })
+            } else if searchOn.elementsEqual([.email]) {
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoEmail != nil {
+                        if contact.leoEmail!.lowercased().contains( searchText.lowercased()) {
+                            return true
+                        }
+                    }
+                    
+                    
+                    return false
+                })
+            }else if searchOn.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .email]) {
+                
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoEmail != nil &&  contact.leoFullName != nil   {
+                        if contact.leoEmail!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if contact.leoEmail != nil   {
+                        if contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if  contact.leoFullName != nil   {
+                        if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    }
+                    
+                    
+                    return false
+                })
+                
+            }else if searchOn.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .phoneNumber]) {
+                
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoPhoneNumber != nil &&  contact.leoFullName != nil   {
+                        if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if contact.leoPhoneNumber != nil   {
+                        if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if  contact.leoFullName != nil   {
+                        if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    }
+                    
+                    
+                    return false
+                })
+                
+            }else if searchOn.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .phoneNumber ,.email]) ||   searchOn.elementsEqual([.all]) ||   searchOn.elementsEqual([.any]) {
+                
+                return contactsBefore.filter({ (contact) -> Bool in
+                    
+                    if searchText == "" {
+                        return true
+                    }
+                    
+                    if contact.leoPhoneNumber != nil &&  contact.leoFullName != nil && contact.leoEmail != nil   {
+                        if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased()) ||  contact.leoFullName!.lowercased().contains( searchText.lowercased()) ||  contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if contact.leoPhoneNumber != nil   {
+                        if contact.leoPhoneNumber!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    } else if  contact.leoFullName != nil   {
+                        if  contact.leoFullName!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    }else if  contact.leoEmail != nil   {
+                        if  contact.leoEmail!.lowercased().contains( searchText.lowercased())   {
+                            return true
+                        }
+                    }
+                    
+                    
+                    
+                    return false
+                })
+                
+            }else {
+                return []
+            }
+        }
+    }
+    
+    fileprivate var contactsBefore : [LeoContactable] {
+        get {
+            if mustKeys.elementsEqual([.any]) {
+                return contactsOriginals
+            }else if mustKeys.elementsEqual([.fullName]) {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoFullName.count > 0 {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.elementsEqual([.email])  {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoEmail.count > 0 {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.elementsEqual([.phoneNumber]){
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoPhoneNumber.count > 0 {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .email]) {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoFullName.count > 0  &&   contact.leoEmail.count > 0  {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .phoneNumber]) {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.fullName, .phoneNumber , .email]) {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  &&   contact.leoEmail.count > 0  {
+                        return true
+                    }
+                    return false
+                })
+                
+            }else if mustKeys.sorted(by: { (key1, key2) -> Bool in
+                return key1.rawValue < key2.rawValue
+                
+            }).elementsEqual([.all]) {
+                
+                return contactsOriginals.filter({ (contact) -> Bool in
+                    if contact.leoFullName.count > 0  &&   contact.leoPhoneNumber.count > 0  &&   contact.leoEmail.count > 0  {
+                        return true
+                    }
+                    return false
+                })
+                
+            }
+            return []
+        }
+    }
+}
 @objc protocol LeoContactable  {
      @objc optional var leoFullName : String {get}
      @objc optional var leoPhoneticFullName : String {get}
@@ -374,14 +377,16 @@ class LeoContacts {
      @objc optional var leoImage : UIImage? {get}
     
 }
+
 extension CNContact : LeoContactable  {
-      var leoFullName : String {
+    
+    var leoFullName : String {
         if let some = CNContactFormatter.string(from: self, style: .fullName)  {
              return some
         }
         return ""
     }
-    
+ 
     var leoPhoneticFullName : String {
         if let some = CNContactFormatter.string(from: self, style: .phoneticFullName)  {
             return some
