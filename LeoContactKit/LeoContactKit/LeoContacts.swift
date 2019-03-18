@@ -95,7 +95,7 @@ class LeoContacts {
         
         
         
-        //CNContactIdentifierKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey, CNContactPhoneNumbersKey, CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName)])
+        //CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactImageDataKey,CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName)]
         
         let keys : [CNKeyDescriptor] = [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName),
                                         CNContactEmailAddressesKey as CNKeyDescriptor,

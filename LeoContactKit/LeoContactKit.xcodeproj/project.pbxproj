@@ -26,6 +26,7 @@
 		18A01C0F223F8A870051FEF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18A01C15223F8A990051FEF2 /* LeoContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeoContacts.swift; sourceTree = "<group>"; };
 		18A01C17223F8AB70051FEF2 /* LeoSafe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeoSafe.swift; sourceTree = "<group>"; };
+		18A01C19223F9A650051FEF2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 				18A01C05223F8A850051FEF2 /* ViewController.swift */,
 				18A01C17223F8AB70051FEF2 /* LeoSafe.swift */,
 				18A01C15223F8A990051FEF2 /* LeoContacts.swift */,
+				18A01C19223F9A650051FEF2 /* README.md */,
 				18A01C07223F8A850051FEF2 /* Main.storyboard */,
 				18A01C0A223F8A870051FEF2 /* Assets.xcassets */,
 				18A01C0C223F8A870051FEF2 /* LaunchScreen.storyboard */,
