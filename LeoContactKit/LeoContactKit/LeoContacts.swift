@@ -26,8 +26,8 @@ class LeoContacts {
         case all
         
     }
-   static var share = LeoContacts()
- 
+    
+    static var share = LeoContacts()
     fileprivate var mustKeys :[Keys] = [.any]
     fileprivate var searchOn :[Keys] = [.any]
     fileprivate var contactStore = CNContactStore()
@@ -38,7 +38,7 @@ class LeoContacts {
         self.mustKeys = keys
         return self
     }
-  
+    
     func withSearchOn(_ keys : [Keys] ) -> LeoContacts {
         self.searchOn = keys
         return self
@@ -47,12 +47,9 @@ class LeoContacts {
         callback?()
     }
     
-   func searchText(_ searchText: String ){
+    func searchText(_ searchText: String ){
         self.searchText = searchText
     }
-    
-    
- 
     
     func requestForAccess(completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
         
@@ -79,7 +76,7 @@ class LeoContacts {
                         
                         DispatchQueue.main.async {
                             
-                             let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
+                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
                             
                             self.showMessage(message: message)
                         }
@@ -95,7 +92,7 @@ class LeoContacts {
         
         
         
-        //CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactImageDataKey,CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName)]
+        //CNContactIdentifierKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey, CNContactPhoneNumbersKey, CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName)])
         
         let keys : [CNKeyDescriptor] = [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName),
                                         CNContactEmailAddressesKey as CNKeyDescriptor,
@@ -104,7 +101,7 @@ class LeoContacts {
         do {
             let contactStore = self.contactStore
             try contactStore.enumerateContacts(with: CNContactFetchRequest(keysToFetch: keys)) { (contact, pointer) -> Void in
-            self.contactsOriginals.append(contact)
+                self.contactsOriginals.append(contact)
             }
         }
         catch let error as NSError {
@@ -370,11 +367,12 @@ extension LeoContacts {
     }
 }
 @objc protocol LeoContactable  {
-     @objc optional var leoFullName : String {get}
-     @objc optional var leoPhoneticFullName : String {get}
-     @objc optional var leoPhoneNumber : String {get}
-     @objc optional var leoEmail : String {get}
-     @objc optional var leoImage : UIImage? {get}
+    @objc optional var leoFullName : String {get}
+    @objc optional var leoPhoneticFullName : String {get}
+    @objc optional var leoPhoneNumber : String {get}
+    @objc optional var leoEmail : String {get}
+    @objc optional var leoImage : UIImage? {get}
+    @objc optional var leoIdentifier : String {get}
     
 }
 
@@ -382,11 +380,11 @@ extension CNContact : LeoContactable  {
     
     var leoFullName : String {
         if let some = CNContactFormatter.string(from: self, style: .fullName)  {
-             return some
+            return some
         }
         return ""
     }
- 
+    
     var leoPhoneticFullName : String {
         if let some = CNContactFormatter.string(from: self, style: .phoneticFullName)  {
             return some
@@ -417,11 +415,18 @@ extension CNContact : LeoContactable  {
         if self.isKeyAvailable(CNContactImageDataKey)  {
             // there is an image for this contact
             if let data = self.imageData  {
-                 return UIImage(data: data)
+                return UIImage(data: data)
             }
             // Do what ever you want with the contact image below
-           
+            
         }
-          return nil
+        return nil
     }
+    
+    
+    var leoIdentifier : String {
+        
+        return self.identifier
+    }
+    
 }
