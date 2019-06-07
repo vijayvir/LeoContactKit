@@ -14,7 +14,7 @@
 		18A01C0E223F8A870051FEF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18A01C0C223F8A870051FEF2 /* LaunchScreen.storyboard */; };
 		18A01C16223F8A990051FEF2 /* LeoContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A01C15223F8A990051FEF2 /* LeoContacts.swift */; };
 		18A01C18223F8AB70051FEF2 /* LeoSafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A01C17223F8AB70051FEF2 /* LeoSafe.swift */; };
-		18AFB1B722AA5F16004B4B0E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 18AFB1B622AA5F16004B4B0E /* README.md */; };
+		18AFB1B922AA613C004B4B0E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 18AFB1B822AA613C004B4B0E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		18A01C0F223F8A870051FEF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18A01C15223F8A990051FEF2 /* LeoContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeoContacts.swift; sourceTree = "<group>"; };
 		18A01C17223F8AB70051FEF2 /* LeoSafe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeoSafe.swift; sourceTree = "<group>"; };
-		18AFB1B622AA5F16004B4B0E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		18AFB1B822AA613C004B4B0E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +64,7 @@
 				18A01C05223F8A850051FEF2 /* ViewController.swift */,
 				18A01C17223F8AB70051FEF2 /* LeoSafe.swift */,
 				18A01C15223F8A990051FEF2 /* LeoContacts.swift */,
-				18AFB1B622AA5F16004B4B0E /* README.md */,
+				18AFB1B822AA613C004B4B0E /* README.md */,
 				18A01C07223F8A850051FEF2 /* Main.storyboard */,
 				18A01C0A223F8A870051FEF2 /* Assets.xcassets */,
 				18A01C0C223F8A870051FEF2 /* LaunchScreen.storyboard */,
@@ -133,7 +133,7 @@
 			files = (
 				18A01C0E223F8A870051FEF2 /* LaunchScreen.storyboard in Resources */,
 				18A01C0B223F8A870051FEF2 /* Assets.xcassets in Resources */,
-				18AFB1B722AA5F16004B4B0E /* README.md in Resources */,
+				18AFB1B922AA613C004B4B0E /* README.md in Resources */,
 				18A01C09223F8A850051FEF2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
