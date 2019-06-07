@@ -366,6 +366,9 @@ extension LeoContacts {
         }
     }
 }
+
+// These protocol is made  so that user can access the properties  not from the ContactKit 
+
 @objc protocol LeoContactable  {
     @objc optional var leoFullName : String {get}
     @objc optional var leoPhoneticFullName : String {get}

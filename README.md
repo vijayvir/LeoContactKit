@@ -36,7 +36,7 @@ CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.Ful
    In this class have following features 
    1 . 
 
-### Keys 
+###
 
 ```
 enum Keys : Int {
@@ -47,23 +47,4 @@ case any = 4
 case all
 
 }
-```
-## Use of functions 
-
-```swift 
-// work only if used allowed to acces the contacts
-LeoContacts.share.requestForAccess { (isGranded) in 
-if isGranded {
-// here it feches contact from contact list 
-LeoContacts.share.getContacts()
-.withMustKeys([.any  ])  //  This add  validations only to get those contacts which have particular keys 
-.withSearchOn([.any]) //     This add  validations only to search on  those contacts which have particular keys 
-.run({
-DispatchQueue.main.async {
-self.tableView.reloadData()
-}
-})
-}
-}
-
 ```

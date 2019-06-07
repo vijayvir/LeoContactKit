@@ -24,20 +24,16 @@ class ViewController: UIViewController {
         
         LeoContacts.share.requestForAccess { (isGranded) in
             if isGranded {
+                // here it feches contact from contact list
                 LeoContacts.share.getContacts()
-                    .withMustKeys([.any  ])
-                    .withSearchOn([.any])
+                    .withMustKeys([.any  ])  //  This add  validations only to get those contacts which have particular keys
+                    .withSearchOn([.any]) //     This add  validations only to search on  those contacts which have particular keys
                     .run({
-                        
-                        
-                        
-                        self.tableView.reloadData()
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
                     })
-                
-                
-                
             }
-            
         }
     }
 }
