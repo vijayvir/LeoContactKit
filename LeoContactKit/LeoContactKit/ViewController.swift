@@ -16,9 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        print("dadas")
         searchBAr.delegate = self
-        
         tableView.delegate = self
         self.tableView.dataSource = self
         
